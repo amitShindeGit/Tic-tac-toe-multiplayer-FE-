@@ -26,7 +26,7 @@ const winningCombinations = [
   { combo: [2, 4, 6], strikeClass: "strike-diagonal-2" },
 ];
 
-function TicTacToe({ board_id, room_id, socket }) {
+function TicTacToe({ board_id, room_id, socket, handleBoard }) {
   const [tiles, setTiles] = useState(Array(9).fill(""));
   const [playerTurn, setPlayerTurn] = useState({});
   const [strikeClass, setStrikeClass] = useState();
@@ -124,8 +124,8 @@ function TicTacToe({ board_id, room_id, socket }) {
 
         if (!boardData?.lastMove?.length) {
           setPlayerTurn({
-            id: boardData?.players[0].id,
-            move: boardData?.players[0].move,
+            id: boardData?.players[0]?.id,
+            move: boardData?.players[0]?.move,
           });
         } else if (
           boardData?.lastMove[0]?.id !== user?.id &&
@@ -135,12 +135,12 @@ function TicTacToe({ board_id, room_id, socket }) {
         } else if (currentPlayerWihoutMove?.length) {
           setPlayerTurn({
             id: currentPlayerWihoutMove[0]?.id,
-            move: currentPlayerWihoutMove[0].move,
+            move: currentPlayerWihoutMove[0]?.move,
           });
         } else {
           setPlayerTurn({
             id: user?.id,
-            move: boardData?.lastMove[0].move === "X" ? "O" : "X",
+            move: boardData?.lastMove[0]?.move === "X" ? "O" : "X",
           });
         }
         setBoardData(boardData);
@@ -157,10 +157,16 @@ function TicTacToe({ board_id, room_id, socket }) {
       const boardData = await boardRes.json();
       fetchCurrentBoard(boardData);
     })();
+
+    socket.on("onResetGame", ({ boardData }) => {
+      setBoardData(boardData);
+
+      setGameState(GameState.inProgress);
+      setStrikeClass(null);
+    });
   }, [board_id]);
 
   useEffect(() => {
-    console.log("sec");
     boardData?.board?.length && checkWinner(boardData?.board);
   }, [boardData]);
 
@@ -180,12 +186,7 @@ function TicTacToe({ board_id, room_id, socket }) {
       });
 
       socket.on("updateBoard", ({ updatedBoard }) => {
-        // if(!updatedBoard?.winner){
-        //    await fetchCurrentBoard();
-        // }
-        console.log("updateaord sockets");
         fetchCurrentBoard(updatedBoard);
-        // setBoardData(updatedBoard);
       });
     }
 
@@ -198,11 +199,18 @@ function TicTacToe({ board_id, room_id, socket }) {
   }, [tiles]);
 
   //PENDING
+  // const handleReset = () => {
+  //   setGameState(GameState.inProgress);
+  //   // setTiles(Array(9).fill(null));
+  //   setPlayerTurn(PLAYER_X);
+  //   setStrikeClass(null);
+  // };
+
   const handleReset = () => {
+    sessionStorage.removeItem("boardId");
     setGameState(GameState.inProgress);
-    // setTiles(Array(9).fill(null));
-    setPlayerTurn(PLAYER_X);
     setStrikeClass(null);
+    handleBoard();
   };
 
   return boardData?.players?.length === 2 ? (

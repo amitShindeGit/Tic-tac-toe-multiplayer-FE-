@@ -34,4 +34,19 @@ export default class RoomServices {
       },
     });
   };
+
+  //Update a room
+  static UpdateRoomById = async (token, data) => {
+    const id = data?.id;
+    return await fetch(`http://localhost:3001/room/${id}`, {
+      method: "PATCH",
+      mode: "cors",
+      cache: "no-cache",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  };
 }

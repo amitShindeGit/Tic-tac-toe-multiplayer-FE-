@@ -9,30 +9,6 @@ const Home = () => {
   const [rooms, setRooms] = useState([]);
   const [newRoom, setNewRoom] = useState("");
 
-  //Socket connection
-  // useEffect(() => {
-  //   // socket.connect();
-
-  //   function onConnect() {
-  //     console.log("success", "Socket Connected!");
-  //   }
-
-  //   function onDisconnect() {
-  //     console.log("disconn", "Socket Dis-Connected!");
-  //   }
-  //   console.log(socket, "socketsssss====");
-
-  //   if (token && !socket.connected) {
-  //     console.log("enter socket");
-  //     socket.on("connect", onConnect);
-  //     socket.on("disconnect", onDisconnect);
-  //   }
-
-  //   return () => {
-  //     socket.off("connect", onConnect);
-  //     socket.off("disconnect", onDisconnect);
-  //   };
-  // }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -63,6 +39,16 @@ const Home = () => {
     }
   };
 
+  const addPlayerToRoom = async (roomId) => {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const data = {
+      id: roomId,
+      players: payload?.id,
+    };
+
+    await RoomServices.UpdateRoomById(token, data);
+  };
+
   return (
     <div>
       <h1>Dashboard</h1>
@@ -71,7 +57,13 @@ const Home = () => {
       {rooms?.map((room) => (
         <div key={room._id}>
           <p>{room.name}</p>
-          <Link to={`/room/${room._id}`}>Join</Link>
+          <Link
+            onClick={() => addPlayerToRoom(room._id)}
+            to={`/room/${room._id}`}
+            style={{pointerEvents: room?.players?.length >= 2 && "none"}}
+          >
+            {room?.players?.length >= 2 ? "Room full" : "Join"}
+          </Link>
         </div>
       ))}
     </div>
