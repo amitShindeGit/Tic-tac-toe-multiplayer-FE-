@@ -11,6 +11,7 @@ const Room = () => {
   const room_id = window.location.pathname.split("/").pop();
   const [newBoardId, setNewBoardId] = useState("");
   const [socket, setSocket] = useState(null);
+  const [tick, setTick] = useState(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -43,12 +44,21 @@ const Room = () => {
 
   useEffect(() => {
     const existingBoardId = sessionStorage.getItem("boardId");
-
-    // (async () => {
+    const token = sessionStorage.getItem("token");
+    (async () => {
+      if (existingBoardId) {
+        const boardDataRes = await BoardServices.GetBoardByID(
+          token,
+          existingBoardId
+        );
+        const boardData = await boardDataRes.json();
+        if (boardData?.players?.length <= 1) {
+          handleBoard();
+        }
+      }
+    })();
     handleBoard(existingBoardId);
-
-    // })();
-  }, []);
+  }, [tick]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -65,7 +75,7 @@ const Room = () => {
         if (boardId) {
           timeout = setTimeout(() => {
             setNewBoardId(boardId);
-            handleBoard();
+            setTick(!tick);
             sessionStorage.setItem("boardId", boardId);
           }, 5000);
         }
@@ -74,7 +84,7 @@ const Room = () => {
 
     window.onbeforeunload = close_event_function;
     function close_event_function() {
-      //Runs on Window close or refresh
+      //Runs on Window close or refresh, can hendle with leaveRoom socket
       socket.emit("updateRoomPlayers", {
         roomId: room_id,
         userId: payload?.id,
@@ -126,7 +136,9 @@ const Room = () => {
 
       const availableBoardForNewSecondPlayer = allCurrentRoomBoards?.filter(
         (board) =>
-          board.players.length < 2 && board.players[0]?.id !== payload?.id
+          board.players.length < 2 &&
+          board.players[0]?.id !== payload?.id &&
+          !board?.winner
       );
 
       availableBoardForNewSecondPlayer.sort(
@@ -134,7 +146,6 @@ const Room = () => {
       );
 
       const secondUserData = await fetchUserById(payload?.id);
-
       if (availableBoardForNewSecondPlayer?.length) {
         const updateBoardData = {
           id: availableBoardForNewSecondPlayer[0]._id,
@@ -203,10 +214,6 @@ const Room = () => {
       const updatedBoardData = await updatedBoardRes.json();
       setNewBoardId(updatedBoardData?.updateBoard?._id);
       sessionStorage.setItem("boardId", updatedBoardData?.updateBoard?._id);
-      // } else {
-      //   console.log("sec")
-      //   setNewBoardId(sessionStorage.getItem("boardId"));
-      // }
     } else {
       setNewBoardId(existingBoardId);
     }
@@ -237,12 +244,6 @@ const Room = () => {
 
     await RoomServices.UpdateRoomById(token, data);
   };
-
-  // const handleReset = () => {
-  //   sessionStorage.removeItem("boardId");
-
-  //   handleBoard();
-  // };
 
   return newBoardId ? (
     <TicTacToe

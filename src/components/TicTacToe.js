@@ -112,8 +112,6 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
 
     if (board_id) {
       try {
-        // const boardRes = await BoardServices.GetBoardByID(token, board_id);
-        // const boardData = await boardRes.json();
         const boardData = structuredClone(updatedBoard);
         const currentPlayerWithMove = boardData?.players?.filter(
           (player) => player?.id === user?.id
@@ -131,7 +129,7 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
           boardData?.lastMove[0]?.id !== user?.id &&
           currentPlayerWithMove?.length
         ) {
-          setPlayerTurn({ id: user?.id, move: currentPlayerWithMove[0].move });
+          setPlayerTurn({ id: user?.id, move: currentPlayerWithMove[0]?.move });
         } else if (currentPlayerWihoutMove?.length) {
           setPlayerTurn({
             id: currentPlayerWihoutMove[0]?.id,
@@ -144,7 +142,7 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
           });
         }
         setBoardData(boardData);
-        setTiles(boardData?.board);
+        // setTiles(boardData?.board);
       } catch (e) {
         console.log(e, "Erorr");
       }
@@ -167,6 +165,7 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
   }, [board_id]);
 
   useEffect(() => {
+    setTiles(boardData?.board);
     boardData?.board?.length && checkWinner(boardData?.board);
   }, [boardData]);
 
@@ -176,13 +175,13 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
       board_id &&
       getKeyByValue(GameState, gameState) === "inProgress"
     ) {
-      socket.on("newPlayerJoinedRoom", async ({ boardId }) => {
-        const currentBoardRes = await BoardServices.GetBoardByID(
-          token,
-          boardId
-        );
-        const currentBoardData = await currentBoardRes.json();
-        fetchCurrentBoard(currentBoardData);
+      socket.on("newPlayerJoinedRoom", ({ boardId, boardData }) => {
+        // const currentBoardRes = await BoardServices.GetBoardByID(
+        //   token,
+        //   boardId
+        // );
+        // const currentBoardData = await currentBoardRes.json();
+        fetchCurrentBoard(boardData);
       });
 
       socket.on("updateBoard", ({ updatedBoard }) => {
@@ -198,14 +197,6 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
     }
   }, [tiles]);
 
-  //PENDING
-  // const handleReset = () => {
-  //   setGameState(GameState.inProgress);
-  //   // setTiles(Array(9).fill(null));
-  //   setPlayerTurn(PLAYER_X);
-  //   setStrikeClass(null);
-  // };
-
   const handleReset = () => {
     sessionStorage.removeItem("boardId");
     setGameState(GameState.inProgress);
@@ -213,7 +204,7 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
     handleBoard();
   };
 
-  return boardData?.players?.length === 2 ? (
+  return boardData?.players?.length === 2 && tiles?.length ? (
     <div>
       <h1>Tic Tac Toe</h1>
       {boardData?.players?.length >= 1 ? (

@@ -5,7 +5,6 @@ const IndexPage = () => {
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
 
-  console.log(token,"token")
   useEffect(() => {
     if (!token) {
       navigate("/login");

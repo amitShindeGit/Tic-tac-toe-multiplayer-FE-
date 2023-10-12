@@ -1,7 +1,6 @@
 export default class BoardServices {
   //Create a board
   static CreateBoard = async (token, data) => {
-    console.log(data, "data");
     return await fetch(`http://localhost:3001/board`, {
       method: "POST",
       mode: "cors",
@@ -24,8 +23,8 @@ export default class BoardServices {
     });
   };
 
-   //Get all board
-   static GetAllBoards = async (token) => {
+  //Get all board
+  static GetAllBoards = async (token) => {
     return await fetch(`http://localhost:3001/board`, {
       method: "GET",
       mode: "cors",
@@ -47,8 +46,5 @@ export default class BoardServices {
       },
       body: JSON.stringify(data),
     });
-
-
-
-  }
+  };
 }
