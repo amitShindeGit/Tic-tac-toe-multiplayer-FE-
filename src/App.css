@@ -4,6 +4,8 @@ body {
   align-items: center;
   background-color: #242730;
   color: white;
+  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 h1 {
@@ -27,11 +29,11 @@ h1 {
 }
 
 .right-border {
-  border-right: 0.2em solid #0074a6;
+  border-right: 0.2em solid #1995ad;
 }
 
 .bottom-border {
-  border-bottom: 0.2em solid #0074a6;
+  border-bottom: 0.2em solid #1995ad;
 }
 
 .x-hover:hover::after {
@@ -44,9 +46,13 @@ h1 {
   opacity: 0.4;
 }
 
+.cursorNotAllowed {
+  cursor: not-allowed;
+}
+
 .strike {
   position: absolute;
-  background-color: darkorange;
+  background-color: #cb0000;
 }
 
 .strike-row-1 {
@@ -94,20 +100,32 @@ h1 {
   transform: skewY(-45deg);
 }
 
-.game-over {
+.gameOverWrap {
+  /* max-width: 200px; */
+  /* position: relative; */
+  background: linear-gradient(to right, red, purple);
+  padding: 3px;
   text-align: center;
-  border: #5468ff 8px;
-  border-style: dotted;
-  padding: 10px;
-  margin-top: 50px;
-  font-size: 1.5em;
+  /* margin: 2rem auto; */
+}
+
+.gameOver {
+  background: #222;
+  color: white;
+  padding: 1rem;
+}
+
+.resetDiv {
+  display: flex;
+  justify-content: center;
 }
 
 .reset-button {
-  margin-top: 50px;
-  padding: 20px;
-  background-color: #0074a6;
+  padding: .5rem;
+  background-color: #68A225;
   color: white;
-  width: 100%;
+  width: fit-content;
   font-size: 1.5em;
+  height: 3.5rem;
+  cursor: pointer;
 }

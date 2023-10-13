@@ -1,0 +1,51 @@
+.mainDiv {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50%;
+  row-gap: 1rem;
+  font-size: 2rem;
+}
+
+.secondDiv {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.titleTxt{
+    font-size: 4rem;
+}
+
+.playerTxt1{
+    color: #FB6542;
+    padding: 2rem;
+    margin-right: 2rem;
+    font-size: 1.5rem;
+    transform: translateY(80%);
+}
+
+.playerTxt2{
+    color: #FFBB00;
+    padding: 2rem;
+    margin-left: 2rem;
+    font-size: 1.5rem;
+    transform: translateY(80%);
+}
+
+.waitTxt {
+  background: radial-gradient(
+    circle,
+    rgba(193, 46, 27, 1) 13%,
+    rgba(207, 124, 127, 1) 82%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btnDiv{
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center ;
+  column-gap: 2rem;
+}

@@ -250,11 +250,10 @@ const Room = () => {
       board_id={newBoardId}
       room_id={room_id}
       socket={socket}
-      // handleReset={handleReset}
       handleBoard={handleBoard}
     />
   ) : (
-    <>Loading board</>
+    <div>Loading board</div>
   );
 };
 

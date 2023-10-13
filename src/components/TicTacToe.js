@@ -3,9 +3,9 @@ import Board from "./Board";
 import GameOver from "./GameOver";
 import GameState from "./GameState";
 import Reset from "./Reset";
-// import { socket } from "../Services/Socket";
 import BoardServices from "../Services/Board";
 import { getKeyByValue } from "../utils";
+import classes from "../styles/TicTacToe.module.css";
 
 const PLAYER_X = "X";
 const PLAYER_O = "O";
@@ -206,34 +206,44 @@ function TicTacToe({ board_id, room_id, socket, handleBoard }) {
 
   return boardData?.players?.length === 2 && tiles?.length ? (
     <div>
-      <h1>Tic Tac Toe</h1>
-      {boardData?.players?.length >= 1 ? (
-        <p>
-          Player1 :{" "}
-          {`${boardData?.players[0]?.name} ( ${boardData?.players[0]?.move})`}
-        </p>
-      ) : (
-        <></>
-      )}
-      <Board
-        playerTurn={isCurrentPlayerTurn ? playerTurn?.move : null}
-        tiles={tiles}
-        onTileClick={handleTileClick}
-        strikeClass={strikeClass}
-      />
-      {boardData?.players?.length >= 2 ? (
-        <p>
-          Player2 :{" "}
-          {`${boardData?.players[1]?.name} ( ${boardData?.players[1]?.move})`}
-        </p>
-      ) : (
-        <></>
-      )}
-      <GameOver gameState={gameState} />
-      <Reset gameState={gameState} onReset={handleReset} />
+      <h1 className={classes.titleTxt}>Tic - Tac - Toe</h1>
+      <div className={classes.secondDiv}>
+        {boardData?.players?.length >= 1 ? (
+          <div>
+            <p className={classes.playerTxt1}>
+              Player1 :{" "}
+              {`${boardData?.players[0]?.name} ( ${boardData?.players[0]?.move} )`}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
+        <Board
+          playerTurn={isCurrentPlayerTurn ? playerTurn?.move : null}
+          tiles={tiles}
+          onTileClick={handleTileClick}
+          strikeClass={strikeClass}
+        />
+        {boardData?.players?.length >= 2 ? (
+          <div>
+            <p className={classes.playerTxt2}>
+              Player2 :{" "}
+              {`${boardData?.players[1]?.name} ( ${boardData?.players[1]?.move} )`}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className={classes.btnDiv}>
+        <GameOver gameState={gameState} />
+        <Reset gameState={gameState} onReset={handleReset} />
+      </div>
     </div>
   ) : (
-    <>Loading board</>
+    <div className={`${classes.mainDiv} ${classes.waitTxt}`}>
+      Waiting for another player to join the room...
+    </div>
   );
 }
 
