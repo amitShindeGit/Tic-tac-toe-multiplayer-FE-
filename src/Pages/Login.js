@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserService from "../Services/User";
 import classes from "../styles/Auth.module.css";
 
 const Login = () => {
+  const token = sessionStorage.getItem("token");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    sessionStorage.removeItem("boardId");
+    sessionStorage.removeItem("gameProgress");
+
+    if (!token) {
+      navigate("/login");
+    } else {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const loginUser = async () => {
     const data = {
@@ -59,7 +71,9 @@ const Login = () => {
       <button className={classes.button85} onClick={loginUser}>
         Login
       </button>
-      <Link className={classes.link} to="/register">Not Registered? Register</Link>
+      <Link className={classes.link} to="/register">
+        Not Registered? Register
+      </Link>
     </div>
   );
 };

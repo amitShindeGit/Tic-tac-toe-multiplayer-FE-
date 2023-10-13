@@ -15,6 +15,8 @@ const Home = () => {
     } else {
       navigate("/dashboard");
     }
+    sessionStorage.removeItem("boardId");
+    sessionStorage.removeItem("gameProgress");
     fetchAllRooms();
   }, []);
 

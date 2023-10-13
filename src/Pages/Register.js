@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserService from "../Services/User";
 import classes from "../styles/Auth.module.css";
@@ -8,6 +8,19 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
+
+
+  useEffect(() => {
+    sessionStorage.removeItem("boardId");
+    sessionStorage.removeItem("gameProgress");
+
+    if (!token) {
+      navigate("/login");
+    } else {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const registerUser = async () => {
     const data = {

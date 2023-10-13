@@ -7,7 +7,6 @@ import Room from "../Pages/Room";
 import IndexPage from "../Pages/IndexPage";
 
 const TicTacRoutes = () => {
-  
   return (
     <BrowserRouter>
       <Routes>
@@ -16,7 +15,10 @@ const TicTacRoutes = () => {
         <Route path="/register" element={<Register />} exact />
         <Route path="/dashboard" element={<Home />} exact />
         <Route path="/room/:id" element={<Room />} exact />
-        <Route path="*" element={<p>Not found page</p>} />
+        <Route
+          path="*"
+          element={<p style={{ fontSize: "2rem" }}>Page not found</p>}
+        />
       </Routes>
     </BrowserRouter>
   );
