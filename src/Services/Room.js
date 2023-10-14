@@ -1,7 +1,7 @@
 export default class RoomServices {
   //Get all rooms
   static GetAllRooms = async (token) => {
-    return await fetch("http://localhost:3001/room", {
+    return await fetch("https://tictactoebe.onrender.com/room", {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -11,7 +11,7 @@ export default class RoomServices {
 
   //Create a room
   static CreateRoom = async (token, data) => {
-    return await fetch("http://localhost:3001/room", {
+    return await fetch("https://tictactoebe.onrender.com/room", {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -25,7 +25,7 @@ export default class RoomServices {
 
   //Get a room
   static GetRoomById = async (token, id) => {
-    return await fetch(`http://localhost:3001/room/${id}`, {
+    return await fetch(`https://tictactoebe.onrender.com/room/${id}`, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -38,7 +38,7 @@ export default class RoomServices {
   //Update a room
   static UpdateRoomById = async (token, data) => {
     const id = data?.id;
-    return await fetch(`http://localhost:3001/room/${id}`, {
+    return await fetch(`https://tictactoebe.onrender.com/room/${id}`, {
       method: "PATCH",
       mode: "cors",
       cache: "no-cache",

@@ -1,7 +1,7 @@
 export default class BoardServices {
   //Create a board
   static CreateBoard = async (token, data) => {
-    return await fetch(`http://localhost:3001/board`, {
+    return await fetch(`https://tictactoebe.onrender.com/board`, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -15,7 +15,7 @@ export default class BoardServices {
 
   //Get a board by ID
   static GetBoardByID = async (token, id) => {
-    return await fetch(`http://localhost:3001/board/${id}`, {
+    return await fetch(`https://tictactoebe.onrender.com/board/${id}`, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -25,7 +25,7 @@ export default class BoardServices {
 
   //Get all board
   static GetAllBoards = async (token) => {
-    return await fetch(`http://localhost:3001/board`, {
+    return await fetch(`https://tictactoebe.onrender.com/board`, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -36,7 +36,7 @@ export default class BoardServices {
   //Update a board
   static UpdateBoard = async (token, data) => {
     const id = data?.id;
-    return await fetch(`http://localhost:3001/board/${id}`, {
+    return await fetch(`https://tictactoebe.onrender.com/board/${id}`, {
       method: "PATCH",
       mode: "cors",
       cache: "no-cache",
