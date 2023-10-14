@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import {  Routes, Route, HashRouter } from "react-router-dom";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Home from "../Pages/Home";
@@ -8,7 +8,7 @@ import IndexPage from "../Pages/IndexPage";
 
 const TicTacRoutes = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<IndexPage />} exact />
         <Route path="/login" element={<Login />} exact />
@@ -20,7 +20,7 @@ const TicTacRoutes = () => {
           element={<p style={{ fontSize: "2rem" }}>Page not found</p>}
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
